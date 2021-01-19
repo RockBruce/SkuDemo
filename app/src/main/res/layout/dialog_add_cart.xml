@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/iv_product_pic"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:adjustViewBounds="true"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="0.3" />
+
+    <TextView
+        android:id="@+id/tv_product_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:textColor="#FF333333"
+        app:layout_constraintEnd_toStartOf="@+id/iv_close"
+        app:layout_constraintStart_toEndOf="@+id/iv_product_pic"
+        app:layout_constraintTop_toTopOf="@+id/iv_product_pic" />
+
+    <TextView
+        android:id="@+id/tv_product_money"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:ellipsize="end"
+        android:maxLines="2"
+        app:layout_constraintStart_toEndOf="@+id/iv_product_pic"
+        app:layout_constraintTop_toBottomOf="@+id/tv_product_name" />
+
+    <TextView
+        android:id="@+id/tv_sku_product_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@+id/tv_product_money"
+        app:layout_constraintTop_toTopOf="@+id/tv_product_money" />
+
+    <TextView
+        android:id="@+id/tv_product_model"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:ellipsize="end"
+        android:maxLines="2"
+        app:layout_constraintEnd_toStartOf="@+id/iv_close"
+        app:layout_constraintStart_toEndOf="@+id/iv_product_pic"
+        app:layout_constraintTop_toBottomOf="@+id/tv_product_money" />
+
+    <ImageView
+        android:id="@+id/iv_close"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="32dp"
+        android:src="@mipmap/ic_close"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tv_product_name"
+        app:layout_constraintWidth_percent="0.05" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_params"
+        android:layout_width="0dp"
+        android:layout_height="200dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/tv_add_cart_num"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/tv_product_name"
+        app:layout_constraintTop_toBottomOf="@+id/tv_product_model"
+        tools:ignore="MissingClass" />
+
+    <TextView
+        android:id="@+id/tv_add_cart_num"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="32dp"
+        android:text="数量："
+        app:layout_constraintBottom_toTopOf="@+id/gl_1"
+        app:layout_constraintStart_toStartOf="@+id/tv_product_name"
+        app:layout_constraintTop_toBottomOf="@+id/rv_params" />
+
+    <ImageView
+        android:id="@+id/iv_reduce"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_add_cart_num"
+        app:layout_constraintStart_toEndOf="@+id/tv_add_cart_num"
+        app:layout_constraintTop_toTopOf="@+id/tv_add_cart_num"
+        app:srcCompat="@mipmap/ic_reduce" />
+
+    <TextView
+        android:id="@+id/tv_cart_sum_num"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:text="1"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_reduce"
+        app:layout_constraintStart_toEndOf="@+id/iv_reduce"
+        app:layout_constraintTop_toTopOf="@+id/iv_reduce"
+        app:layout_constraintWidth_percent="0.08" />
+
+    <ImageView
+        android:id="@+id/iv_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_reduce"
+        app:layout_constraintStart_toEndOf="@+id/tv_cart_sum_num"
+        app:layout_constraintTop_toTopOf="@+id/iv_reduce"
+        app:srcCompat="@mipmap/ic_add" />
+
+    <TextView
+        android:id="@+id/tv_stock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:text="库存："
+        app:layout_constraintBottom_toBottomOf="@+id/iv_add"
+        app:layout_constraintStart_toEndOf="@+id/iv_add"
+        app:layout_constraintTop_toTopOf="@+id/iv_add" />
+
+    <TextView
+        android:id="@+id/tv_sku_stock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_add"
+        app:layout_constraintStart_toEndOf="@+id/tv_stock"
+        app:layout_constraintTop_toTopOf="@+id/iv_add" />
+
+    <TextView
+        android:id="@+id/tv_add_cart"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="32dp"
+        android:gravity="center"
+        android:text="确定"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.1"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintWidth_percent="0.35" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gl_1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintGuide_percent="0.8"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
