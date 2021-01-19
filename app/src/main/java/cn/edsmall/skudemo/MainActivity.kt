@@ -26,13 +26,13 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        RetrofitBuilder.getInstance().setBaseUrl("https://channelmachine-pre.edsmall.com")
+        RetrofitBuilder.getInstance().setBaseUrl("https://xxxxxx.com")
 
         // TODO refresh param
         val timestamp = System.currentTimeMillis() / 1000
         parasMap["token"] = ""
-        parasMap.put("appkey", "f7ab9296f156213c00a55a0e5e74c34a")
-        parasMap.put("appsecret", Md5Util.md5("56b108c7073d475099872e3803733272$timestamp"))
+        parasMap.put("appkey", "xxxxxxxxx")
+        parasMap.put("appsecret", Md5Util.md5("xxxxxxxxxxx$timestamp"))
         parasMap.put("timestamp", timestamp)
         parasMap.put("platform", "android")
         ReqParams.getInstance().initReqParamMap(parasMap)
