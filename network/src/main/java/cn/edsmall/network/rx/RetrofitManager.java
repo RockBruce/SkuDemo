@@ -99,16 +99,18 @@ public class RetrofitManager {
      * FlowableTransformer        要对应 DisposableSubscriber
      * ObservableTransformer     要对应Observer
      *
-     * @param disposable
+     * @param disposable 观察者
      * @param <T>
      * @return
      */
     public <T> FlowableTransformer<T, T> applySchedulers(final DisposableSubscriber<T> disposable) {
         return (upstream) -> {
+            //被观察角色
             Flowable<T> observable = upstream.subscribeOn(Schedulers.io())
                     .subscribeOn(AndroidSchedulers.mainThread())
                     .map(getAppErrorHandler())  //错误的处理
                     .onErrorResumeNext(new HttpErrorHandler<T>());
+            //订阅
             observable.subscribe(disposable);
             return observable;
         };

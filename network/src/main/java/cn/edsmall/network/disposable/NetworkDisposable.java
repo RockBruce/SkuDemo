@@ -1,7 +1,9 @@
-package cn.edsmall.network;
+package cn.edsmall.network.disposable;
 
 import android.util.Log;
 
+import cn.edsmall.network.BuildConfig;
+import cn.edsmall.network.utils.SubscriberUtils;
 import io.reactivex.subscribers.DisposableSubscriber;
 
 
@@ -9,7 +11,8 @@ public abstract class NetworkDisposable<T> extends DisposableSubscriber<T> {
     public static final String TAG = NetworkDisposable.class.getSimpleName();
 
     public NetworkDisposable() {
-
+        SubscriberUtils.getInstance().addSubscriber(this);
+        Log.e(TAG, "disposable的对象= " + this);
     }
 
     @Override
