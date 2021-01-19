@@ -12,3 +12,7 @@
 /captures
 .externalNativeBuild
 .cxx
+/gradle
+.idea
+/release
+
