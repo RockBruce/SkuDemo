@@ -67,8 +67,8 @@ public class LoggingInterceptor implements Interceptor {
                 }
                 respBody = buffer.clone().readString(charset);
             }
-            Log.d(TAG, String.format("收到响应\n%s %s\n请求url：%s\n响应body：%s",
-                    response.code(), response.message(), response.request().url(), respBody));
+            Log.d(TAG, String.format("收到响应\n响应码：%s\n响应头：%s\n请求url：%s\n响应body：%s",
+                    response.code(), response.headers(), response.request().url(), respBody));
             long t2 = System.nanoTime();
 //            Log.d(TAG, String.format("Received response for %s in %.1fms%n%s", response.request().url(), (t2 - t1) / 1e6d, response.headers()));
             return response;

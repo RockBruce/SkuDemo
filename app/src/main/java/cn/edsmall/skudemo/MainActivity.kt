@@ -14,6 +14,7 @@ import cn.edsmall.skudemo.bean.AddAddressBaen
 import cn.edsmall.skudemo.bean.ProductDetail
 import cn.edsmall.skudemo.weight.SpecificationsDialog
 import com.google.gson.Gson
+import io.reactivex.functions.Function
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -51,7 +52,6 @@ class MainActivity : AppCompatActivity() {
 
             }
         }
-
         defaultClient.queryArea()
             .compose(RetrofitManager().applySchedulers(reqDispose))
         Log.e("MainActivity",reqDispose.isDisposed.toString())

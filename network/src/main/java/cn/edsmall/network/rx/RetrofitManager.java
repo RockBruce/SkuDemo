@@ -3,14 +3,23 @@ package cn.edsmall.network.rx;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.io.File;
+import java.util.concurrent.TimeUnit;
+
 import cn.edsmall.network.bean.RespMsg;
 import cn.edsmall.network.errorhandler.HttpErrorHandler;
+import cn.edsmall.network.interceptor.CacheInterceptor;
+import cn.edsmall.network.interceptor.LoggingInterceptor;
+import cn.edsmall.network.interceptor.ParamsInterceptor;
+import io.reactivex.BackpressureOverflowStrategy;
+import io.reactivex.BackpressureStrategy;
 import io.reactivex.Flowable;
 import io.reactivex.FlowableTransformer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subscribers.DisposableSubscriber;
+import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
@@ -34,7 +43,8 @@ public class RetrofitManager {
                 .client(client)
                 .addConverterFactory(GsonConverterFactory.create(mGson))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io())) // RxJava将Retrofit的call转成Observer
-                .build().create(serviceClass);
+                .build()
+                .create(serviceClass);
     }
 
    /* public <T> T getNotificationClient(Class<T> serviceClass, DownNotification downNotification, final String completeTitle) {
@@ -79,7 +89,7 @@ public class RetrofitManager {
                 .build().create(serviceClass);
     }*/
 
-   /* public <T> T getCacheClient(Class<T> serviceClass, File cacheFile) {
+    public <T> T getCacheClient(Class<T> serviceClass, File cacheFile) {
         OkHttpClient client = new OkHttpClient.Builder()
                 .connectTimeout(15, TimeUnit.SECONDS)
                 .readTimeout(10, TimeUnit.SECONDS)
@@ -93,7 +103,7 @@ public class RetrofitManager {
                 .addConverterFactory(GsonConverterFactory.create(mGson))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io()))
                 .build().create(serviceClass);
-    }*/
+    }
 
     /**
      * FlowableTransformer        要对应 DisposableSubscriber
@@ -106,11 +116,13 @@ public class RetrofitManager {
     public <T> FlowableTransformer<T, T> applySchedulers(final DisposableSubscriber<T> disposable) {
         return (upstream) -> {
             //被观察角色
-            Flowable<T> observable = upstream.subscribeOn(Schedulers.io())
-                    .subscribeOn(AndroidSchedulers.mainThread())
-                    .map(getAppErrorHandler())  //错误的处理
+            Flowable<T> observable =
+                    upstream
+                            .subscribeOn(Schedulers.io()) //指定网络请求发生在子线程
+                    .observeOn(AndroidSchedulers.mainThread())   // 切换到主线程中去
+                    .map(getAppErrorHandler())                   //错误的处理
                     .onErrorResumeNext(new HttpErrorHandler<T>());
-            //订阅
+            //订阅观察者
             observable.subscribe(disposable);
             return observable;
         };
