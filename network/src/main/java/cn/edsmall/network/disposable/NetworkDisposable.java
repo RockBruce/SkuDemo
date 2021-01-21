@@ -1,6 +1,8 @@
 package cn.edsmall.network.disposable;
 
+import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import cn.edsmall.network.BuildConfig;
 import cn.edsmall.network.utils.SubscriberUtils;
@@ -9,8 +11,10 @@ import io.reactivex.subscribers.DisposableSubscriber;
 
 public abstract class NetworkDisposable<T> extends DisposableSubscriber<T> {
     public static final String TAG = NetworkDisposable.class.getSimpleName();
+    private final Context mContext;
 
-    public NetworkDisposable() {
+    public NetworkDisposable(Context context) {
+        this.mContext=context;
         SubscriberUtils.getInstance().addSubscriber(this);
         Log.e(TAG, "disposable的对象= " + this);
     }
@@ -39,10 +43,10 @@ public abstract class NetworkDisposable<T> extends DisposableSubscriber<T> {
 
     @Override
     public void onError(Throwable e) {
-        if (BuildConfig.LEO_DEBUG) {
+
             Log.e(TAG, "竟然出错了: " + e.getMessage());
             // 服务器收到了请求 参数错误/处理错误  500 501 502
             //服务没有收到请求 400 401 404 403
-        }
+        Toast.makeText(mContext,e.getMessage(),Toast.LENGTH_LONG).show();
     }
 }

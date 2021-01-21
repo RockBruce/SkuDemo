@@ -1,5 +1,7 @@
 package cn.edsmall.network.rx;
 
+import android.util.Log;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -7,6 +9,7 @@ import java.io.File;
 import java.util.concurrent.TimeUnit;
 
 import cn.edsmall.network.bean.RespMsg;
+import cn.edsmall.network.errorhandler.ExceptionHandle;
 import cn.edsmall.network.errorhandler.HttpErrorHandler;
 import cn.edsmall.network.interceptor.CacheInterceptor;
 import cn.edsmall.network.interceptor.LoggingInterceptor;
@@ -119,9 +122,9 @@ public class RetrofitManager {
             Flowable<T> observable =
                     upstream
                             .subscribeOn(Schedulers.io()) //指定网络请求发生在子线程
-                    .observeOn(AndroidSchedulers.mainThread())   // 切换到主线程中去
-                    .map(getAppErrorHandler())                   //错误的处理
-                    .onErrorResumeNext(new HttpErrorHandler<T>());
+                            .observeOn(AndroidSchedulers.mainThread())   // 切换到主线程中去
+                            .map(getAppErrorHandler())                   //错误的处理
+                            .onErrorResumeNext(new HttpErrorHandler<T>());
             //订阅观察者
             observable.subscribe(disposable);
             return observable;
@@ -130,8 +133,11 @@ public class RetrofitManager {
 
     public <T> Function<T, T> getAppErrorHandler() {
         return (resopnse) -> {
-            if (resopnse instanceof RespMsg) {
-
+            if (resopnse instanceof RespMsg && ((RespMsg) resopnse).getCode() != 200) {
+                ExceptionHandle.ServerException exception = new ExceptionHandle.ServerException();
+                exception.code = ((RespMsg) resopnse).getCode();
+                exception.message = ((RespMsg) resopnse).getMessage() != null ? ((RespMsg) resopnse).getMessage() : "";
+                throw exception;
 
             }
             return resopnse;

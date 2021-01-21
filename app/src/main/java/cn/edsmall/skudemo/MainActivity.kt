@@ -14,7 +14,6 @@ import cn.edsmall.skudemo.bean.AddAddressBaen
 import cn.edsmall.skudemo.bean.ProductDetail
 import cn.edsmall.skudemo.weight.SpecificationsDialog
 import com.google.gson.Gson
-import io.reactivex.functions.Function
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -46,7 +45,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun loadData2() {
         val defaultClient = RetrofitManager().getDefaultClient(UserService::class.java)
-        reqDispose = object : NetworkDisposable<RespMsg<AddAddressBaen>>() {
+        reqDispose = object : NetworkDisposable<RespMsg<AddAddressBaen>>(this) {
             override fun onNext(t: RespMsg<AddAddressBaen>?) {
                 super.onNext(t)
 
@@ -61,7 +60,7 @@ class MainActivity : AppCompatActivity() {
         RetrofitManager().getDefaultClient(UserService::class.java)
             .queryArea()
             .compose(RetrofitManager().applySchedulers(object :
-                NetworkDisposable<RespMsg<AddAddressBaen>>() {
+                NetworkDisposable<RespMsg<AddAddressBaen>>(this) {
                 override fun onNext(t: RespMsg<AddAddressBaen>?) {
                     super.onNext(t)
 
@@ -100,6 +99,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     /**
+     * @see initListener
      * 显示规格弹窗
      */
     private fun showSpecDialog(productDetail: ProductDetail?) {

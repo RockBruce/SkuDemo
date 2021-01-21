@@ -11,7 +11,6 @@ public class HttpErrorHandler<T> implements Function<Throwable, Flowable<T>> {
     @Override
     public Flowable<T> apply(Throwable throwable) throws Exception {
         if (BuildConfig.LEO_DEBUG){
-            Log.e("HttpErrorHandler",throwable.getMessage());
         }
         return io.reactivex.Flowable.error(ExceptionHandle.handleException(throwable));
     }

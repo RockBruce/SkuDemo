@@ -16,7 +16,7 @@ import okio.Buffer;
 import okio.BufferedSource;
 
 /**
- * Created by Administrator_LZH on 2016/9/1.
+ * @see cn.edsmall.network.rx.OkHttpClientManager
  */
 public class LoggingInterceptor implements Interceptor {
 
@@ -34,7 +34,7 @@ public class LoggingInterceptor implements Interceptor {
     public Response intercept(Chain chain) throws IOException {
         Charset UTF8 = Charset.forName("UTF-8");
         if (BuildConfig.LEO_DEBUG || true) {
-             // 打印请求报文
+            // 打印请求报文
             Request request = chain.request();
             long t1 = System.nanoTime();
             Log.d(TAG, String.format("请求方式 %s 请求Url: %s on %s%n%s", request.method(), request.url(), chain.connection(), request.headers()));
@@ -51,7 +51,7 @@ public class LoggingInterceptor implements Interceptor {
             Response response = chain.proceed(request);
             ResponseBody responseBody = response.body();
             String respBody = null;
-            if(responseBody != null) {
+            if (responseBody != null) {
                 BufferedSource source = responseBody.source();
                 source.request(Long.MAX_VALUE);
                 Buffer buffer = source.buffer();
@@ -67,8 +67,8 @@ public class LoggingInterceptor implements Interceptor {
                 }
                 respBody = buffer.clone().readString(charset);
             }
-            Log.d(TAG, String.format("收到响应\n响应码：%s\n响应头：%s\n请求url：%s\n响应body：%s",
-                    response.code(), response.headers(), response.request().url(), respBody));
+            Log.d(TAG, String.format("收到响应\n响应码：%s\n响应信息：%s\n响应头：%s\n请求url：%s\n响应body：%s",
+                    response.code(), response.message(),response.headers(), response.request().url(), respBody));
             long t2 = System.nanoTime();
 //            Log.d(TAG, String.format("Received response for %s in %.1fms%n%s", response.request().url(), (t2 - t1) / 1e6d, response.headers()));
             return response;
